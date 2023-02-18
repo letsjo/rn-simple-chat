@@ -1,14 +1,15 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, Button } from 'react-native'
 import styled from 'styled-components'
 
 const Container = styled.View`
   flex: 1;
   justify-content: center;
+  align-items: center;
   background-color: ${({ theme }) => theme.background};
 `
 
-const Login = () => {
+const Login = ({ navigation }) => {
   return (
     <Container>
       <Text style={ { fontSize: 30 } }>Login Screen</Text>
