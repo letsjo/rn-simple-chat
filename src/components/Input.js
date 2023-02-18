@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, forwardRef } from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
@@ -26,43 +26,49 @@ const StyledTextInput = styled.TextInput.attrs(({ theme }) => ({
   border-radius: 4px;
 `;
 
-const Input = ({
-  label,
-  value,
-  onChangeText,
-  onSubmitEditing,
-  onBlur,
-  placeholder,
-  isPassword,
-  returnKeyType,
-  maxLength,
-}) => {
-  const [isFocused, setIsFocused] = useState(false);
+const Input = forwardRef(
+  (
+    {
+      label,
+      value,
+      onChangeText,
+      onSubmitEditing,
+      onBlur,
+      placeholder,
+      isPassword,
+      returnKeyType,
+      maxLength,
+    },
+    ref
+  ) => {
+    const [isFocused, setIsFocused] = useState(false);
 
-  return (
-    <Container>
-      <Label isFocused={ isFocused }>{ label }</Label>
-      <StyledTextInput
-        isFocused={ isFocused }
-        value={ value }
-        onChangeText={ onChangeText }
-        onSubmitEditing={ onSubmitEditing }
-        onFocus={ () => setIsFocused(true) }
-        onBlur={ () => {
-          setIsFocused(false);
-          onBlur();
-        } }
-        placeholder={ placeholder }
-        secureTextEntry={ isPassword }
-        returnKeyType={ returnKeyType }
-        maxLength={ maxLength }
-        autoCapitalize='none'
-        textContentType='none'
-        underlineColorAndroid='transparent'
-      />
-    </Container>
-  )
-}
+    return (
+      <Container>
+        <Label isFocused={ isFocused }>{ label }</Label>
+        <StyledTextInput
+          ref={ ref }
+          isFocused={ isFocused }
+          value={ value }
+          onChangeText={ onChangeText }
+          onSubmitEditing={ onSubmitEditing }
+          onFocus={ () => setIsFocused(true) }
+          onBlur={ () => {
+            setIsFocused(false);
+            onBlur();
+          } }
+          placeholder={ placeholder }
+          secureTextEntry={ isPassword }
+          returnKeyType={ returnKeyType }
+          maxLength={ maxLength }
+          autoCapitalize='none'
+          textContentType='none'
+          underlineColorAndroid='transparent'
+        />
+      </Container>
+    )
+  }
+);
 
 Input.defaultProps = {
   onBlur: () => { },
@@ -76,7 +82,7 @@ Input.propTypes = {
   onBlur: PropTypes.func,
   placeholder: PropTypes.string,
   isPassword: PropTypes.bool,
-  returnKeyType: PropTypes.oneOf(['done', 'text']),
+  returnKeyType: PropTypes.oneOf(['done', 'next']),
   maxLength: PropTypes.number,
 }
 
