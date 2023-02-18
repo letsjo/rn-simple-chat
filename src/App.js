@@ -4,10 +4,11 @@ import { Asset } from 'expo-asset'
 import * as Font from 'expo-font'
 import { ThemeProvider } from 'styled-components/native'
 import { theme } from './theme'
+import { images } from './utils/Images'
 
 import * as SplashScreen from 'expo-splash-screen';
 
-import Navigation from './navigations'
+import Navigation from './navigations';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -34,6 +35,7 @@ const App = () => {
         await SplashScreen.preventAutoHideAsync();
         const imageAssets = cacheImages([
           require('../assets/splash.png'),
+          ...Object.values(images),
         ])
         const fontAssets = cacheFonts([]);
         await Promise.all([...imageAssets, ...fontAssets])
