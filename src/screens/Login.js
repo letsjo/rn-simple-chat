@@ -3,9 +3,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styled from 'styled-components'
 import { Button, Image, Input } from '../components'
 import { images } from '../utils/Images'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useContext } from 'react'
 import { Alert } from 'react-native'
 import { signin } from '../utils/firebase'
+import { ProgressContext } from '../contexts'
 
 import { validateEmail, removeWhitespace } from '../utils/common'
 
@@ -29,6 +30,7 @@ const ErrorText = styled.Text`
 `
 
 const Login = ({ navigation }) => {
+  const { spinner } = useContext(ProgressContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -56,10 +58,13 @@ const Login = ({ navigation }) => {
 
   const _handleLoginButtonPress = async () => {
     try {
+      spinner.start();
       const user = await signin({ email, password });
       Alert.alert('Login Success', user.email);
     } catch (error) {
       Alert.alert('Login Error', error.message)
+    } finally {
+      spinner.stop();
     }
   }
 

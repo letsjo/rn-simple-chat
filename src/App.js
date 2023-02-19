@@ -5,6 +5,7 @@ import * as Font from 'expo-font'
 import { ThemeProvider } from 'styled-components/native'
 import { theme } from './theme'
 import { images } from './utils/Images'
+import { ProgressProvider } from './contexts'
 
 import * as SplashScreen from 'expo-splash-screen';
 
@@ -64,8 +65,10 @@ const App = () => {
       <ThemeProvider
         theme={ theme }
       >
-        <StatusBar barStyle='dark-content' />
-        <Navigation />
+        <ProgressProvider>
+          <StatusBar barStyle='dark-content' />
+          <Navigation />
+        </ProgressProvider>
       </ThemeProvider>
     </View>
   )
