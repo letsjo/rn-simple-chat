@@ -1,4 +1,4 @@
-const color = {
+const colors = {
   white: '#ffffff',
   black: '#000000',
   gray_0: '#f5f5f5',
@@ -8,6 +8,36 @@ const color = {
 };
 
 export const theme = {
-  background: color.white,
-  text: color.black,
+  background: colors.white,
+  text: colors.black,
+  errorText: colors.red,
+
+  imageBackground: colors.gray_0,
+  imageButtonBackground: colors.gray_1,
+  imageButtonIcon: colors.white,
+
+  label: colors.gray_1,
+  inputPlaceholder: colors.gray_1,
+  inputBorder: colors.gray_1,
+  inputDisabledBackground: colors.gray_0,
+
+  buttonBackground: colors.blue,
+  buttonTitle: colors.white,
+  buttonUnfilledTitle: colors.blue,
+  buttonLogout: colors.red,
+
+  headerTintColor: colors.black,
+  tabActiveColor: colors.blue,
+  tabInactiveColor: colors.gray_1,
+
+  spinnerBackground: colors.black,
+  spinnerIndicator: colors.white,
+
+  listBorder: colors.gray_0,
+  listTime: colors.gray_1,
+  listDescription: colors.gray_1,
+  listIcon: colors.black,
+
+  sendButtonActivate: colors.blue,
+  sendButtonInactivate: colors.gray_1,
 };

@@ -1,11 +1,17 @@
-import { useState } from 'react'
-import { StatusBar, Image } from 'react-native'
-import { AppLoading } from 'expo'
+import { useCallback, useEffect, useState } from 'react'
+import { StatusBar, Image, View } from 'react-native'
 import { Asset } from 'expo-asset'
 import * as Font from 'expo-font'
 import { ThemeProvider } from 'styled-components/native'
 import { theme } from './theme'
+import { images } from './utils/Images'
+import { ProgressProvider, UserProvider } from './contexts'
 
+import * as SplashScreen from 'expo-splash-screen';
+
+import Navigation from './navigations';
+
+SplashScreen.preventAutoHideAsync();
 
 const cacheImages = images => {
   return images.map(image => {
@@ -24,26 +30,50 @@ const cacheFonts = fonts => {
 const App = () => {
   const [isReady, setIsReady] = useState(false);
 
-  const _loadAssets = async () => {
-    const imageAssets = cacheImages([
-      require('../assets/splash.png'),
-    ])
+  useEffect(() => {
+    const _loadAssets = async () => {
+      try {
+        await SplashScreen.preventAutoHideAsync();
+        const imageAssets = cacheImages([
+          require('../assets/splash.png'),
+          ...Object.values(images),
+        ])
+        const fontAssets = cacheFonts([]);
+        await Promise.all([...imageAssets, ...fontAssets])
+      } catch (e) {
+        console.warn;
+      } finally {
+        setIsReady(true);
+      }
+    }
 
-    const fontAssets = cacheFonts([]);
+    _loadAssets();
+  }, []);
 
-    await Promise.all([...imageAssets, ...fontAssets])
+  const onLayoutRootView = useCallback(async () => {
+    if (isReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isReady]);
+
+  if (!isReady) {
+    return null;
   }
-  return isReady ? (
-    <ThemeProvider theme={ theme }>
-      <StatusBar barStyle='dark-content' />
-    </ThemeProvider>
-  ) : (
-    <AppLoading
-      startAsync={ _loadAssets }
-      onFinish={ () => setIsReady(true) }
-      onError={ console.warn }
-    />
-  );
+
+  return (
+    <View style={ { flex: 1 } } onLayout={ onLayoutRootView }>
+      <ThemeProvider
+        theme={ theme }
+      >
+        <UserProvider>
+          <ProgressProvider>
+            <StatusBar barStyle='dark-content' />
+            <Navigation />
+          </ProgressProvider>
+        </UserProvider>
+      </ThemeProvider>
+    </View>
+  )
 }
 
 export default App
