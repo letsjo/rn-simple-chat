@@ -4,6 +4,8 @@ import styled from 'styled-components'
 import { Button, Image, Input } from '../components'
 import { images } from '../utils/Images'
 import { useState, useRef, useEffect } from 'react'
+import { Alert } from 'react-native'
+import { signin } from '../utils/firebase'
 
 import { validateEmail, removeWhitespace } from '../utils/common'
 
@@ -39,7 +41,6 @@ const Login = ({ navigation }) => {
   }, [email, password, errorMessage])
 
   const passwordRef = useRef();
-  const _handleLoginButtonPress = () => { };
 
   const _handleEmailChange = (email) => {
     const changedEmail = removeWhitespace(email);
@@ -51,6 +52,15 @@ const Login = ({ navigation }) => {
 
   const _handlePasswordChange = (password) => {
     setPassword(removeWhitespace(password));
+  }
+
+  const _handleLoginButtonPress = async () => {
+    try {
+      const user = await signin({ email, password });
+      Alert.alert('Login Success', user.email);
+    } catch (error) {
+      Alert.alert('Login Error', error.message)
+    }
   }
 
   return (
