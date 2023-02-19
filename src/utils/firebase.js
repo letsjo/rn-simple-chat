@@ -5,6 +5,7 @@ import {
   signOut,
   updateProfile,
 } from 'firebase/auth';
+import { getFirestore, collection, doc, setDoc } from 'firebase/firestore';
 import { getReactNativePersistence, initializeAuth } from 'firebase/auth/react-native';
 import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import config from '../../firebase.json';
@@ -60,4 +61,20 @@ export const updateUserInfo = async photo => {
   const photoUrl = await uploadImage(photo);
   await updateProfile(auth.currentUser, { photoUrl });
   return photoUrl;
+};
+
+const db = getFirestore(app);
+
+export const createChannel = async ({ title, description }) => {
+  const channelCollection = collection(db, 'channels');
+  const newChannelRef = doc(channelCollection);
+  const id = newChannelRef.id;
+  const newChannel = {
+    id,
+    title,
+    description,
+    createdAt: Date.now(),
+  };
+  await setDoc(newChannelRef, newChannel);
+  return id;
 };
