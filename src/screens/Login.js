@@ -89,7 +89,7 @@ const Login = ({ navigation }) => {
           label='Password'
           value={ password }
           onChangeText={ _handlePasswordChange }
-          onSubmitEditing={ () => { } }
+          onSubmitEditing={ _handleLoginButtonPress }
           placeholder='Password'
           returnKeyType='done'
           isPassword
