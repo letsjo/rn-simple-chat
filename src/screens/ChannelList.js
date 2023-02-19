@@ -1,7 +1,15 @@
-import { memo, useContext } from 'react'
+import { memo, useContext, useEffect, useState } from 'react'
 import styled, { ThemeContext } from 'styled-components/native'
 import { FlatList } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
+import { app } from '../utils/firebase';
+import {
+  getFirestore,
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+} from 'firebase/firestore';
 
 const Container = styled.View`
   flex: 1;
@@ -69,14 +77,35 @@ const Item = memo(({ item: { id, title, description, createAt }, onPress }) => {
 );
 
 const ChannelList = ({ navigation }) => {
+  const [channels, setChannels] = useState([]);
+
+  const db = getFirestore(app);
+
   const _handleItemPress = params => {
     navigation.navigate('Channel', params);
   }
 
+  useEffect(() => {
+    const collectionQuery = query(
+      collection(db, 'channels'),
+      orderBy('createdAt', 'desc')
+    );
+
+    const unsubscribe = onSnapshot(collectionQuery, snapshot => {
+      const list = [];
+      snapshot.forEach(doc => {
+        list.push(doc.data());
+      });
+      setChannels(list);
+    });
+
+    return () => unsubscribe();
+  }, [])
+
   return (
     <Container>
       <FlatList
-        keyExtractor={ item => item['id'].toString() }
+        keyExtractor={ item => item['id'] }
         data={ channels }
         renderItem={ ({ item }) => (
           <Item item={ item } onPress={ _handleItemPress } />
