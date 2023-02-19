@@ -10,6 +10,7 @@ const Container = styled.TouchableOpacity`
   border-radius: 4px;
   width: 100%;
   padding: 10px;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `
 
 const Title = styled.Text`
@@ -18,12 +19,13 @@ const Title = styled.Text`
   font-size: 16px;
   color: ${({ theme, isFilled }) => (isFilled ? theme.buttonTitle : theme.buttonUnfilledTitle)};
 `
-const Button = ({ containerStyle, title, onPress, isFilled }) => {
+const Button = ({ containerStyle, title, onPress, isFilled, disabled }) => {
   return (
     <Container
       style={ containerStyle }
       onPress={ onPress }
       isFilled={ isFilled }
+      disabled={ disabled }
     >
       <Title isFilled={ isFilled }>{ title }</Title>
     </Container>
@@ -39,6 +41,7 @@ Button.propTypes = {
   title: PropTypes.string,
   onPress: PropTypes.func.isRequired,
   isFilled: PropTypes.bool,
+  disabled: PropTypes.bool,
 }
 
 export default Button
