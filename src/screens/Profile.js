@@ -37,8 +37,8 @@ const Profile = () => {
   const _handlePhotoChange = async (url) => {
     try {
       spinner.start();
-      const updatedUser = await updateUserInfo(url);
-      setPhotoUrl(updatedUser.photoUrl);
+      const photoUrl = await updateUserInfo(url);
+      setPhotoUrl(photoUrl);
     } catch (error) {
       Alert.alert('Photo Error', error.message);
     } finally {
