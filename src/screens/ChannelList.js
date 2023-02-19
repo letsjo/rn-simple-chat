@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import { memo, useContext } from 'react'
 import styled, { ThemeContext } from 'styled-components/native'
 import { FlatList } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
@@ -47,7 +47,7 @@ for (let idx = 0; idx < 1000; idx++) {
   })
 }
 
-const Item = ({ item: { id, title, description, createAt }, onPress }) => {
+const Item = memo(({ item: { id, title, description, createAt }, onPress }) => {
   const theme = useContext(ThemeContext);
   console.log(`Item: ${id}`);
 
@@ -66,6 +66,7 @@ const Item = ({ item: { id, title, description, createAt }, onPress }) => {
     </ItemContainer>
   )
 }
+);
 
 const ChannelList = ({ navigation }) => {
   const _handleItemPress = params => {
