@@ -6,7 +6,7 @@ import { images } from '../utils/Images'
 import { useState, useRef, useEffect, useContext } from 'react'
 import { Alert } from 'react-native'
 import { signin } from '../utils/firebase'
-import { ProgressContext } from '../contexts'
+import { ProgressContext, UserContext } from '../contexts'
 
 import { validateEmail, removeWhitespace } from '../utils/common'
 
@@ -30,6 +30,7 @@ const ErrorText = styled.Text`
 `
 
 const Login = ({ navigation }) => {
+  const { dispatch } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -60,7 +61,7 @@ const Login = ({ navigation }) => {
     try {
       spinner.start();
       const user = await signin({ email, password });
-      Alert.alert('Login Success', user.email);
+      dispatch(user);
     } catch (error) {
       Alert.alert('Login Error', error.message)
     } finally {
