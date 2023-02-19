@@ -21,7 +21,7 @@ const MainTab = () => {
   const theme = useContext(ThemeContext);
   return (
     <Tab.Navigator
-      tabBarOptions={ {
+      screenOptions={ {
         activeTintColor: theme.tabActiveColor,
         inactiveTintColor: theme.tabInactiveColor,
       } }
