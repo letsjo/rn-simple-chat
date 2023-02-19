@@ -10,7 +10,7 @@ import { getDownloadURL, getStorage, ref, uploadBytes } from 'firebase/storage';
 import config from '../../firebase.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const app = initializeApp(config);
+const app = initializeApp(config);
 
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(AsyncStorage),
@@ -49,4 +49,15 @@ const uploadImage = async uri => {
   });
 
   return await getDownloadURL(storageRef);
+};
+
+export const getCurrentUser = () => {
+  const { uid, displayName, email, photoURL } = auth.currentUser;
+  return { uid, name: displayName, email, photoUrl: photoURL };
+};
+
+export const updateUserInfo = async photo => {
+  const photoUrl = await uploadImage(photo);
+  await updateProfile(auth.currentUser, { photoUrl });
+  return photoUrl;
 };
