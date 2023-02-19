@@ -1,4 +1,5 @@
-import { Text, Button } from 'react-native'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { TouchableWithoutFeedback, Keyboard } from 'react-native'
 import styled from 'styled-components'
 import { Image, Input } from '../components'
 import { images } from '../utils/Images'
@@ -19,27 +20,29 @@ const Login = ({ navigation }) => {
   const passwordRef = useRef();
 
   return (
-    <Container>
-      <Image url={ images.logo } imageStyle={ { borderRadius: 8 } } />
-      <Input
-        label='Email'
-        value={ email }
-        onChangeText={ (text) => setEmail(text) }
-        onSubmitEditing={ () => passwordRef.current.focus() }
-        placeholder='Email'
-        returnKeyType='next'
-      />
-      <Input
-        ref={ passwordRef }
-        label='Password'
-        value={ password }
-        onChangeText={ (text) => setPassword(text) }
-        onSubmitEditing={ () => { } }
-        placeholder='Password'
-        returnKeyType='done'
-        isPassword
-      />
-    </Container>
+    <TouchableWithoutFeedback onPress={ () => Keyboard.dismiss() }>
+      <Container>
+        <Image url={ images.logo } imageStyle={ { borderRadius: 8 } } />
+        <Input
+          label='Email'
+          value={ email }
+          onChangeText={ (text) => setEmail(text) }
+          onSubmitEditing={ () => passwordRef.current.focus() }
+          placeholder='Email'
+          returnKeyType='next'
+        />
+        <Input
+          ref={ passwordRef }
+          label='Password'
+          value={ password }
+          onChangeText={ (text) => setPassword(text) }
+          onSubmitEditing={ () => { } }
+          placeholder='Password'
+          returnKeyType='done'
+          isPassword
+        />
+      </Container>
+    </TouchableWithoutFeedback>
   )
 }
 
