@@ -32,4 +32,9 @@ export const theme = {
 
   spinnerBackground: colors.black,
   spinnerIndicator: colors.white,
+
+  listBorder: colors.gray_0,
+  listTime: colors.gray_1,
+  listDescription: colors.gray_1,
+  listIcon: colors.black,
 };
