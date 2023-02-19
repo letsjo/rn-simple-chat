@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { removeWhitespace, validateEmail } from '../utils/common'
+import { Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
+import { removeWhitespace, validateEmail } from '../utils/common'
 import { Image, Input, Button } from '../components'
 import { images } from '../utils/Images'
+import { signup } from '../utils/firebase'
 
 const Container = styled.View`
   flex: 1;
@@ -37,6 +40,15 @@ const Signup = () => {
   const passwordConfirmRef = useRef();
   const didMountRef = useRef();
 
+  const _handleSignupButtonPress = async () => {
+    try {
+      const user = await signup({ email, password, name, photoUrl });
+      Alert.alert('Signup Success', user.email);
+    } catch (error) {
+      Alert.alert('Signup Error', error.message);
+    }
+  };
+
   useEffect(() => {
     if (didMountRef.current) {
       let _errorMessage = '';
@@ -61,8 +73,6 @@ const Signup = () => {
   useEffect(() => {
     setDisabled(!(name && email && password && passwordConfirm && !errorMessage));
   }, [name, email, password, passwordConfirm, errorMessage])
-
-  const _handleSignupButtonPress = () => { };
 
   return (
     <KeyboardAwareScrollView
