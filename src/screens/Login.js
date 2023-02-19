@@ -1,4 +1,5 @@
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import styled from 'styled-components'
 import { Button, Image, Input } from '../components'
 import { images } from '../utils/Images'
@@ -11,7 +12,9 @@ const Container = styled.View`
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.background};
-  padding: 20px;
+  padding: 0 20px;
+  padding-top: ${({ insets: { top } }) => top}px;
+  padding-bottom: ${({ insets: { bottom } }) => bottom}px;
 `
 
 const ErrorText = styled.Text`
@@ -28,6 +31,8 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [disabled, setDisabled] = useState(true);
+
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     setDisabled(!(email && password && !errorMessage));
@@ -53,7 +58,7 @@ const Login = ({ navigation }) => {
       contentContainerStyle={ { flex: 1 } }
       extraScrollHeight={ 20 }
     >
-      <Container>
+      <Container insets={ insets }>
         <Image url={ images.logo } imageStyle={ { borderRadius: 8 } } />
         <Input
           label='Email'
