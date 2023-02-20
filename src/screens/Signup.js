@@ -7,7 +7,7 @@ import { removeWhitespace, validateEmail } from '../utils/common'
 import { Image, Input, Button } from '../components'
 import { images } from '../utils/Images'
 import { signup } from '../utils/firebase'
-import { ProgressContext } from '../contexts'
+import { ProgressContext, UserContext } from '../contexts'
 
 const Container = styled.View`
   flex: 1;
@@ -27,6 +27,7 @@ const ErrorText = styled.Text`
 `
 
 const Signup = () => {
+  const { dispatch } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -46,7 +47,7 @@ const Signup = () => {
     try {
       spinner.start();
       const user = await signup({ email, password, name, photoUrl });
-      Alert.alert('Signup Success', user.email);
+      dispatch(user);
     } catch (error) {
       Alert.alert('Signup Error', error.message);
     } finally {
@@ -113,7 +114,7 @@ const Signup = () => {
           onChangeText={ text => setPassword(removeWhitespace(text)) }
           onSubmitEditing={ () => passwordConfirmRef.current.focus() }
           placeholder="Password"
-          returnKeyType="done"
+          returnKeyType="next"
           isPassword
         />
         <Input
